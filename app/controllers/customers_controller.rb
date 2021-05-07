@@ -1,4 +1,6 @@
 class CustomersController < ApplicationController
+  rescue_from ActiveRecord::RecordNotFound, with: :catch_not_found
+  layout 'customer_layout'
   before_action :set_customer, only: [:show, :edit, :update, :destroy]
 
   # GET /customers
@@ -70,5 +72,11 @@ class CustomersController < ApplicationController
     # Only allow a list of trusted parameters through.
     def customer_params
       params.require(:customer).permit(:first_name, :last_name, :phone)
+    end
+
+    def catch_not_found(e)
+      Rails.logger.debug("We had a not found exception.")
+      flash.alert = e.to_s
+      redirect_to customers_path
     end
 end
