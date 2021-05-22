@@ -17,18 +17,14 @@ RSpec.describe Customer, type: :model do
     expect(subject).to_not be_valid
   end
   # it "is not valid without an email"
+
   it "is not valid if the phone number is not 10 chars" do 
-    expect(subject.phone.size).to eql(10)
-    # subject.phone = "41512345670"
-    # expect(subject).to_not be_valid
+    expect(subject.phone.length).to eq(10)
+
   end
 
   it "is not valid if the phone number is not all digits" do 
-     regex = /^\d{10}$/
-    expect(subject.phone.match regex).to be_truthy
-
-    # subject.phone = "a123456789"
-    # expect(subject).to_not be_valid
+    expect( (subject.phone).match?(/\A-?\d+\Z/) ).to eq(true)
   end
 
   it "returns the correct full_name" do
